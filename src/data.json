@@ -1,0 +1,41 @@
+[
+  {
+    "text": "node 1",
+    "children": [
+      {
+        "text": "node 1a",
+        "children": [
+          
+        ]
+      }
+    ]
+  },
+  {
+    "text": "node 2",
+    "children": [
+      {
+        "text": "node 2a",
+        "children": [
+          {
+            "text": "node 2aa",
+            "children": [
+              
+            ]
+          }
+        ]
+      },
+      {
+        "text": "node 2b",
+        "children": [
+          
+        ]
+      }
+    ]
+  },
+  {
+    "text": "node 3",
+    "children": [
+      
+    ]
+  }
+]
