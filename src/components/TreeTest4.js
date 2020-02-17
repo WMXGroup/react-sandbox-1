@@ -38,6 +38,7 @@ class TreeTest extends React.Component {
   }
 
   render() {
+    console.log(this.refs)
 
     writeToLS(this.state.options);
 
@@ -50,7 +51,7 @@ class TreeTest extends React.Component {
             download="data.json"
          >Download Data
          </a>
-         <h1>Toppings</h1>
+         <h1>My Tree</h1>
          <OptionsList 
            options={this.state.options}
            selectedOptions={this.state.selectedOptions}
@@ -178,13 +179,14 @@ const OptionsList = ({ options, selectedOptions, onChange, textChange, lastId, u
 // Dumb checkbox component, completly controlled by parent
 const TextNode = (
   { 
-    selected, label, 
+    selected, 
+    label, 
     onChange, 
     handleTextChange,
     handleAdd, 
     handleAddSub, 
     handleDelete,
-    handleReturn
+    handleReturn,
    }
   ) => {
   return (
