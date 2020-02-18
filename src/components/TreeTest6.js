@@ -1,12 +1,20 @@
 import React from 'react';
-// import initialData from './initialData';
 
-  // // // Put the object into storage
-  // localStorage.setItem('myTreeData', JSON.stringify(initialData));
+const retrievedStorage = localStorage.getItem('myTreeData');
 
-  // Retrieve the object from storage
-  const retrievedObject = localStorage.getItem('myTreeData');
-  const myTreeData = JSON.parse(retrievedObject)
+if(retrievedStorage === null) {
+  localStorage.setItem('myTreeData', JSON.stringify([
+    {
+        name: "Start Here",
+        id: 1,
+        selected: false,
+        subOptions: []
+      }
+    ]));
+}
+
+
+const myTreeData = JSON.parse(localStorage.getItem('myTreeData'))
 
 const styles = {
   addNode: {
@@ -27,8 +35,6 @@ const writeToLS = (newData) => {
   localStorage.setItem('myTreeData', JSON.stringify(newData));
 };
 
-// const readFromLS= () => JSON.parse(localStorage.getItem('myTreeData'));
-
 // Root component -> Manages all app state
 class TreeTest extends React.Component {    
   state = {
@@ -48,11 +54,18 @@ class TreeTest extends React.Component {
     this.downloadFile(JSON.stringify(this.state.options), "data.json", "text/plain");
   }
 
-  onChangeHandler = event => {
-    this.setState({
-      selectedFile: event.target.files[0],
-      loaded: 0,
-    })
+  getFile = (e) => {
+    let files = e.target.files;
+    let reader = new FileReader();
+    reader.readAsText(files[0]);
+
+    reader.onload = e => {
+      console.log(e.target.result);
+      localStorage.setItem('myTreeData', e.target.result);
+      this.setState({
+        options: JSON.parse(e.target.result)
+      })
+    };
   }
 
   render() {
@@ -65,7 +78,7 @@ class TreeTest extends React.Component {
           <label>Select Json file to import</label>
          </div>
          <div>
-          <input type="file" name="file" onChange={this.onChangeHandler} accept=".json"/>
+           <input type="file" name="file" onChange={this.getFile} accept=".json"/>
          </div>
          <button
           onClick={() => this.exportJSON()}
@@ -177,6 +190,16 @@ class OptionsList extends React.Component {
       }
     }
 
+    const getNodeCount = (optionId) => {
+      let optionCount = 0;
+      for(let i=0;i<options.length;i++){
+        if(options[i].id === optionId){
+          optionCount = options[i].subOptions.length
+        }
+      }
+      return optionCount;
+    }
+
     return(
       <div>
       {options.map((option, index) => {
@@ -193,6 +216,7 @@ class OptionsList extends React.Component {
             handleReturn={(e) => handleReturn(e, index)}
             myRef={this.textInput[index]}
             isMaxNew={this.state.isLastNew}
+            nodeCount={getNodeCount(option.id)}
            />
           {/* Base Case */}
           {(option.subOptions.length > 0 && option.selected === true) &&
@@ -225,6 +249,7 @@ class TextNode extends React.Component {
       handleAddSub, 
       handleDelete,
       handleReturn,
+      nodeCount,
       myRef
     } = this.props;
     return(
@@ -247,12 +272,15 @@ class TextNode extends React.Component {
         onKeyPress={handleReturn}
         ref={myRef}
       />
+      <label>
+        {nodeCount}
+      </label>
       <input
         style={styles.addSubButton}
         value="+"
         type="button"
         onClick={handleAddSub} 
-      /> 
+      />
       <input
         style={styles.deleteSubButton}
         value="-"
