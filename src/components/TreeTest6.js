@@ -2,7 +2,7 @@ import React from 'react';
 
 const retrievedStorage = localStorage.getItem('myTreeData');
 
-if(retrievedStorage === null) {
+if(retrievedStorage === null || retrievedStorage === []) {
   localStorage.setItem('myTreeData', JSON.stringify([
     {
         name: "Start Here",
