@@ -28,6 +28,12 @@ const styles = {
   deleteSubButton:{
     backgroundColor: 'fireBrick',
     color: 'white'
+  },
+  tightenNodes:{
+    margin: 0
+  },
+  nodeText:{
+    border: 'none'
   }
 }
 
@@ -85,10 +91,10 @@ class TreeTest extends React.Component {
           >Export Data
          </button>
          <h1>My Tree</h1>
-         <OptionsList 
-           options={this.state.options}
-           textChange={(options) => this.setState({options})}
-         />
+          <OptionsList 
+            options={this.state.options}
+            textChange={(options) => this.setState({options})}
+          />
        </div>
      )
   }
@@ -201,10 +207,10 @@ class OptionsList extends React.Component {
     }
 
     return(
-      <div>
+      <React.Fragment>
       {options.map((option, index) => {
         return (
-        <ul>
+        <ul style={styles.tightenNodes}>
           <TextNode
             selected={option.selected} 
             label={option.name} 
@@ -228,7 +234,7 @@ class OptionsList extends React.Component {
         </ul>
       )}
       )}
-    </div>
+    </React.Fragment>
   )
   }
 }
@@ -260,6 +266,7 @@ class TextNode extends React.Component {
         onClick={onChange} 
       /> 
       <input 
+        style={styles.nodeText}
         type="text"
         value={label}
         onChange={handleTextChange}
