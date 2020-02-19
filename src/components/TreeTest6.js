@@ -255,12 +255,6 @@ class TextNode extends React.Component {
     return(
       <React.Fragment>
       <input
-        style={styles.addNode}
-        value="+"
-        type="button"
-        onClick={handleAdd} 
-      /> 
-      <input
         type="checkbox"
         checked = {selected}
         onClick={onChange} 
