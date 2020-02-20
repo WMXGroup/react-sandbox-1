@@ -1,4 +1,6 @@
 import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const retrievedStorage = localStorage.getItem('myTreeData');
 
@@ -29,12 +31,22 @@ const styles = {
     backgroundColor: 'fireBrick',
     color: 'white'
   },
-  tightenNodes:{
-    margin: 0
+  optionList:{
+    margin: 0,
+  },
+  textNode:{
+    border: '1px solid #ccc',
+    display:'flex',
+    flex: 1,
+    height: '100%'
   },
   nodeText:{
-    border: 'none'
-  }
+    border: 'none',
+    resize: 'none',
+    height: '100%',
+    overflow: 'hidden',
+    overflowWrap: 'break-word',
+  },
 }
 
 const writeToLS = (newData) => {
@@ -210,7 +222,7 @@ class OptionsList extends React.Component {
       <React.Fragment>
       {options.map((option, index) => {
         return (
-        <ul style={styles.tightenNodes}>
+        <ul style={styles.optionList}>
           <TextNode
             selected={option.selected} 
             label={option.name} 
@@ -259,36 +271,60 @@ class TextNode extends React.Component {
       myRef
     } = this.props;
     return(
-      <React.Fragment>
-      <input
-        type="checkbox"
-        checked = {selected}
-        onClick={onChange} 
-      /> 
-      <input 
-        style={styles.nodeText}
-        type="text"
-        value={label}
-        onChange={handleTextChange}
-        onKeyPress={handleReturn}
-        ref={myRef}
-      />
-      <label>
-        {nodeCount}
-      </label>
-      <input
-        style={styles.addSubButton}
-        value="+"
-        type="button"
-        onClick={handleAddSub} 
-      />
-      <input
-        style={styles.deleteSubButton}
-        value="-"
-        type="button"
-        onClick={handleDelete} 
-      /> 
-    </React.Fragment>
+      <div style={styles.textNode}>
+        <Checkbox
+          checked={selected}
+          onChange={onChange}
+        />
+        {/* <input
+          type="checkbox"
+          checked = {selected}
+          onClick={onChange} 
+        />  */}
+        {/* <input 
+          style={styles.nodeText}
+          type="text"
+          value={label}
+          onChange={handleTextChange}
+          onKeyPress={handleReturn}
+          ref={myRef}
+        /> */}
+        <TextField
+          style={styles.nodeText}
+          InputProps={{
+            disableUnderline: true
+         }}
+          type="text"
+          value={label}
+          onChange={handleTextChange}
+          onKeyPress={handleReturn}
+          ref={myRef}
+          multiline
+        />
+        {/* <textarea
+          style={styles.nodeText}
+          type="text"
+          value={label}
+          onChange={handleTextChange}
+          onKeyPress={handleReturn}
+          ref={myRef}
+        /> */}
+        <label>
+          {nodeCount}
+        </label>
+        <input
+          style={styles.addSubButton}
+          value="+"
+          type="button"
+          onClick={handleAddSub} 
+        />
+        <input
+          style={styles.deleteSubButton}
+          value="-"
+          type="button"
+          onClick={handleDelete} 
+        /> 
+    </div>
     )
   }
 }
