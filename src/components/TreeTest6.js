@@ -1,6 +1,10 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const retrievedStorage = localStorage.getItem('myTreeData');
 
@@ -194,6 +198,7 @@ class OptionsList extends React.Component {
   
     const handleReturn = (e, index) => {
       if(e.key === 'Enter'){
+        e.preventDefault()
         handleAdd(index);
       if(this.textInput[index+1] !== undefined){
         this.setState({
@@ -275,6 +280,7 @@ class TextNode extends React.Component {
         <Checkbox
           checked={selected}
           onChange={onChange}
+          color="primary"
         />
         {/* <input
           type="checkbox"
@@ -294,11 +300,10 @@ class TextNode extends React.Component {
           InputProps={{
             disableUnderline: true
          }}
-          type="text"
           value={label}
           onChange={handleTextChange}
           onKeyPress={handleReturn}
-          ref={myRef}
+          inputRef={myRef}
           multiline
         />
         {/* <textarea
@@ -309,10 +314,25 @@ class TextNode extends React.Component {
           onKeyPress={handleReturn}
           ref={myRef}
         /> */}
-        <label>
+        <label style={{
+          display:'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '1px #ccc solid'
+        }}>
           {nodeCount}
         </label>
-        <input
+        <IconButton
+          onClick={handleAddSub} 
+        >
+          <AddCircleIcon/>
+        </IconButton>
+        <IconButton
+          onClick={handleDelete} 
+        >
+          <HighlightOffIcon/>
+        </IconButton>
+        {/* <input
           style={styles.addSubButton}
           value="+"
           type="button"
@@ -323,7 +343,7 @@ class TextNode extends React.Component {
           value="-"
           type="button"
           onClick={handleDelete} 
-        /> 
+        />  */}
     </div>
     )
   }
