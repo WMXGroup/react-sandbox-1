@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-// import TreeTest from './components/TreeTest';
-// import TreeTest2 from './components/TreeTest2';
-// import TreeTest3 from './components/TreeTest3';
-import TreeTest6 from './components/TreeTest6';
+import TreeView from './components/TreeView';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from "@material-ui/core";
+import { blue } from '@material-ui/core/colors';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue
+  },
+  typography: {
+
+  }
+});
 
 class App extends Component {
 
   state = { count: 0 }
 
-
   render() {
     return (
-      <div>
-        <TreeTest6 />
-      </div>
+      <ThemeProvider theme={theme}>
+        <TreeView />
+      </ThemeProvider>
     );
   }
 }
