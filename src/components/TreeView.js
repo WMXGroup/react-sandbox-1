@@ -1,5 +1,6 @@
 import React from 'react';
 import OptionList from './OptionList';
+import Button from '@material-ui/core/Button';
 
 class TreeView extends React.Component {    
   state = {
@@ -72,15 +73,29 @@ class TreeView extends React.Component {
      return (
        <div>
          <div>
-          <label>Select Json file to import</label>
+         <input 
+          type="file"
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          name="file" 
+          onChange={this.getFile}
+          accept=".json"
+          />
+          <label htmlFor="raised-button-file">
+            <Button 
+              variant="contained"
+              color="secondary"
+              component="span">
+              Import JSON
+            </Button>
+          </label>
          </div>
-         <div>
-           <input type="file" name="file" onChange={this.getFile} accept=".json"/>
-         </div>
-         <button
+         <Button
+          variant="contained"
           onClick={() => this.exportJSON()}
+          color="primary"
           >Export Data
-         </button>
+         </Button>
          <h1>My Tree</h1>
           <OptionList 
             options={this.state.options}
