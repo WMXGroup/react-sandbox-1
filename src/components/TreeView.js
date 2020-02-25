@@ -1,6 +1,7 @@
 import React from 'react';
 import OptionList from './OptionList';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 class TreeView extends React.Component {    
   state = {
@@ -10,12 +11,20 @@ class TreeView extends React.Component {
   }
 
   componentDidMount = () => {
+    this.getServerData();
     const treeData = this.getData();
-
+    
     this.setState({
       options: treeData,
       isLoading: false
     })
+  }
+
+  getServerData = () => {
+    axios
+    .get('https://guarded-mesa-76047.herokuapp.com/api/lists')
+    .then(res => console.log(res));
+    // .then(res => this.setState({ options: res.list }));
   }
 
   getData = () => {
@@ -65,6 +74,11 @@ class TreeView extends React.Component {
   }
 
   render() {
+
+    if(this.props.match.params.id !== undefined){
+      console.log(this.props.match.params.id);
+    }
+    
 
     if(this.state.isLoading === false){
       this.writeToLS(this.state.options);

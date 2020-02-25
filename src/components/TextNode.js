@@ -13,10 +13,11 @@ const styles = (theme) => ({
   nodeContainer:{
     borderLeft: '1px solid #ccc',
     display:'flex',
-    // flex: 1,
   },
   nodeText:{
     // border: 'none',
+    width:'500px'
+
   },
   addButton:{
     fontSize: '17px',
@@ -27,7 +28,6 @@ const styles = (theme) => ({
     color: 'red',
   },
   nodeCount:{
-    display:'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
