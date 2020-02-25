@@ -22,10 +22,10 @@ class App extends Component {
     return (
       <Router>
       <ThemeProvider theme={theme}>
-        <Route exact path="/" render={() => (
+        <Route exact path="/react-sandbox-1" render={() => (
               <TreeView />
             )} />
-        <Route path="/:id" component={TreeView} />
+        <Route path="/react-sandbox-1/:id" component={TreeView} />
       </ThemeProvider>
       </Router>
     );
