@@ -11,7 +11,7 @@ class TreeView extends React.Component {
   }
 
   componentDidMount = () => {
-    this.getServerData();
+    // this.getServerData();
     const treeData = this.getData();
     
     this.setState({
