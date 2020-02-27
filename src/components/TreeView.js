@@ -11,7 +11,7 @@ class TreeView extends React.Component {
   }
 
   componentDidMount = () => {
-    // this.getServerData();
+    this.getServerData();
     const treeData = this.getData();
     
     this.setState({
@@ -21,10 +21,27 @@ class TreeView extends React.Component {
   }
 
   getServerData = () => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let listId = params.get('query');
+
     axios
-    .get('https://guarded-mesa-76047.herokuapp.com/api/lists')
-    .then(res => console.log(res));
-    // .then(res => this.setState({ options: res.list }));
+    .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
+    .then(res => this.setState({ options: res.data.list }));
+  }
+
+  saveData = () => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let listId = params.get('query');
+
+    axios
+    .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
+      list: this.state.options
+    })
+    .then(res => {
+      console.log(res);
+    });
   }
 
   getData = () => {
@@ -75,18 +92,13 @@ class TreeView extends React.Component {
 
   render() {
 
-    if(this.props.match.params.id !== undefined){
-      console.log(this.props.match.params.id);
-    }
-    
-
-    if(this.state.isLoading === false){
-      this.writeToLS(this.state.options);
-    }
+    // if(this.state.isLoading === false){
+    //   this.writeToLS(this.state.options);
+    // }
 
      return (
        <div>
-         <div>
+         {/* <div>
          <input 
           type="file"
           style={{ display: 'none' }}
@@ -109,6 +121,12 @@ class TreeView extends React.Component {
           onClick={() => this.exportJSON()}
           color="primary"
           >Export Data
+         </Button> */}
+         <Button
+          variant="contained"
+          onClick={() => this.saveData()}
+          color="primary"
+          >Save Data
          </Button>
          <h1>My Tree</h1>
           <OptionList 
