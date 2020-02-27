@@ -35,14 +35,12 @@ class TreeView extends React.Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
 
-    if(listId !== undefined){
+    if(listId !== undefined && listId !== null){
       axios
       .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
       .then(res => this.setState({ options: res.data.list }));
     }
   }
-
-  // https://wmxgroup.github.io/react-sandbox-1/?query=5e546069f64fda0017478315
 
   saveData = () => {
     let search = window.location.search;
@@ -120,14 +118,13 @@ class TreeView extends React.Component {
     })
     .then((res) => {
       alert('New list created!')
-      console.log(res);
       return(res);
     })
     .then((res) => {
       const newId = res.data._id;
 
       const a = document.createElement("a");
-      a.href = `https://wmxgroup.github.io/react-sandbox-1/${newId}`;
+      a.href = `https://wmxgroup.github.io/react-sandbox-1/?query=${newId}`;
       a.click();
     });
   }
