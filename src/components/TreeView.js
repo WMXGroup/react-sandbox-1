@@ -3,6 +3,16 @@ import OptionList from './OptionList';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
+const styles = {
+  buttonContainer:{
+    display: 'flex',
+  },
+  buttonStyle: {
+    padding: '8px',
+    margin: '3px'
+  }
+}
+
 class TreeView extends React.Component {    
   state = {
     options: [],
@@ -29,6 +39,8 @@ class TreeView extends React.Component {
     .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
     .then(res => this.setState({ options: res.data.list }));
   }
+
+  // https://wmxgroup.github.io/react-sandbox-1/?query=5e546069f64fda0017478315
 
   saveData = () => {
     let search = window.location.search;
@@ -90,6 +102,10 @@ class TreeView extends React.Component {
     };
   }
 
+  createNew = () => {
+    alert('Hey!')
+  }
+
   render() {
 
     // if(this.state.isLoading === false){
@@ -98,36 +114,46 @@ class TreeView extends React.Component {
 
      return (
        <div>
-         {/* <div>
-         <input 
-          type="file"
-          style={{ display: 'none' }}
-          id="raised-button-file"
-          name="file" 
-          onChange={this.getFile}
-          accept=".json"
-          />
-          <label htmlFor="raised-button-file">
-            <Button 
-              variant="contained"
-              color="secondary"
-              component="span">
-              Import JSON
-            </Button>
-          </label>
+         <div style={styles.buttonContainer}>
+          <input 
+            type="file"
+            style={{ display: 'none' }}
+            id="raised-button-file"
+            name="file" 
+            onChange={this.getFile}
+            accept=".json"
+            />
+            <label htmlFor="raised-button-file">
+              <Button 
+                style={styles.buttonStyle}
+                variant="contained"
+                color="secondary"
+                component="span">
+                Import JSON
+              </Button>
+            </label>
+          <Button
+            style={styles.buttonStyle}
+            variant="contained"
+            onClick={() => this.exportJSON()}
+            color="primary"
+            >Export Data
+          </Button>
+          <Button
+            style={styles.buttonStyle}
+            variant="contained"
+            onClick={() => this.saveData()}
+            color="primary"
+            >Save Data
+          </Button>
+          <Button
+            style={styles.buttonStyle}
+            variant="contained"
+            onClick={() => this.createNew()}
+            color="primary"
+            >Create New
+          </Button>
          </div>
-         <Button
-          variant="contained"
-          onClick={() => this.exportJSON()}
-          color="primary"
-          >Export Data
-         </Button> */}
-         <Button
-          variant="contained"
-          onClick={() => this.saveData()}
-          color="primary"
-          >Save Data
-         </Button>
          <h1>My Tree</h1>
           <OptionList 
             options={this.state.options}
