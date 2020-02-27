@@ -22,12 +22,12 @@ class TreeView extends React.Component {
 
   componentDidMount = () => {
     this.getServerData();
-    const treeData = this.getData();
+    // const treeData = this.getLSData();
     
-    this.setState({
-      options: treeData,
-      isLoading: false
-    })
+    // this.setState({
+    //   options: treeData,
+    //   isLoading: false
+    // })
   }
 
   getServerData = () => {
@@ -35,9 +35,11 @@ class TreeView extends React.Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
 
-    axios
-    .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
-    .then(res => this.setState({ options: res.data.list }));
+    if(listId !== undefined){
+      axios
+      .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
+      .then(res => this.setState({ options: res.data.list }));
+    }
   }
 
   // https://wmxgroup.github.io/react-sandbox-1/?query=5e546069f64fda0017478315
@@ -51,12 +53,12 @@ class TreeView extends React.Component {
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
       list: this.state.options
     })
-    .then(res => {
-      console.log(res);
+    .then(() => {
+      alert('Data saved successfully!')
     });
   }
 
-  getData = () => {
+  getLSData = () => {
     const retrievedStorage = localStorage.getItem('myTreeData');
     if(retrievedStorage === null || retrievedStorage === []) {
       localStorage.setItem('myTreeData', JSON.stringify([
@@ -102,8 +104,31 @@ class TreeView extends React.Component {
     };
   }
 
-  createNew = () => {
-    alert('Hey!')
+  createNew = async () => {
+    const newData = 
+    [{
+      name: "Start Here",
+      id: 1,
+      selected: false,
+      subOptions: [],
+      depth: 0
+    }];
+
+    const [results] = await axios
+    .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
+      list: newData
+    });
+
+    await alert('New list created!');
+
+    console.log(results);
+
+    const newId = results.data._id;
+
+    const a = document.createElement("a");
+    a.href = `https://wmxgroup.github.io/react-sandbox-1/${newId}`;
+    a.click();
+
   }
 
   render() {
