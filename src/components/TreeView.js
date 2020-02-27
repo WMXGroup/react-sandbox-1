@@ -104,7 +104,7 @@ class TreeView extends React.Component {
     };
   }
 
-  createNew = async () => {
+  createNew = () => {
     const newData = 
     [{
       name: "Start Here",
@@ -114,21 +114,22 @@ class TreeView extends React.Component {
       depth: 0
     }];
 
-    const [results] = await axios
+    axios
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
       list: newData
+    })
+    .then((res) => {
+      alert('New list created!')
+      console.log(res);
+      return(res);
+    })
+    .then((res) => {
+      const newId = res.data._id;
+
+      const a = document.createElement("a");
+      a.href = `https://wmxgroup.github.io/react-sandbox-1/${newId}`;
+      a.click();
     });
-
-    await alert('New list created!');
-
-    console.log(results);
-
-    const newId = results.data._id;
-
-    const a = document.createElement("a");
-    a.href = `https://wmxgroup.github.io/react-sandbox-1/${newId}`;
-    a.click();
-
   }
 
   render() {
