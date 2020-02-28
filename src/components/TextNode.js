@@ -21,7 +21,7 @@ const styles = (theme) => ({
   },
   addButton:{
     fontSize: '17px',
-    color: 'green',
+    color: 'green'
   },
   deleteButton:{
     fontSize: '17px',

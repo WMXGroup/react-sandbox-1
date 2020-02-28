@@ -9,7 +9,8 @@ const styles = {
   },
   buttonStyle: {
     padding: '8px',
-    margin: '3px'
+    margin: '3px',
+    textAlign: 'center',
   }
 }
 
@@ -38,7 +39,10 @@ class TreeView extends React.Component {
     if(listId !== undefined && listId !== null){
       axios
       .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
-      .then(res => this.setState({ options: res.data.list }));
+      .then(res => this.setState({ 
+        options: res.data.list
+        
+      }));
     }
   }
 
@@ -129,6 +133,21 @@ class TreeView extends React.Component {
     });
   }
 
+  createBaseNode = () => {
+    const newData = 
+    [{
+      name: "Start Here",
+      id: 1,
+      selected: false,
+      subOptions: [],
+      depth: 0
+    }];
+
+    this.setState({
+      options: newData
+    });
+  }
+
   render() {
 
     // if(this.state.isLoading === false){
@@ -177,6 +196,17 @@ class TreeView extends React.Component {
             >Create New
           </Button>
          </div>
+         {this.state.options.length === 0 &&
+         <div>
+           <Button
+            style={styles.buttonStyle}
+            variant="contained"
+            onClick={() => this.createBaseNode()}
+            color="primary"
+            >Add Base Node
+           </Button>
+         </div>
+        }
          <h1>My Tree</h1>
           <OptionList 
             options={this.state.options}
