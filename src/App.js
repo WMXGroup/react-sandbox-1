@@ -10,7 +10,20 @@ const theme = createMuiTheme({
   },
   typography: {
 
-  }
+  },
+  overrides: {
+    MuiBadge: {
+      badge: {
+        height: 13,
+        minWidth: 13,
+        padding: 0,
+        
+      },
+      colorPrimary: {
+        backgroundColor: 'Navy'
+      }
+    },
+  },
 });
 
 class App extends Component {

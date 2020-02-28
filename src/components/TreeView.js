@@ -169,7 +169,7 @@ class TreeView extends React.Component {
               <Button 
                 style={styles.buttonStyle}
                 variant="contained"
-                color="secondary"
+                color="primary"
                 component="span">
                 Import JSON
               </Button>

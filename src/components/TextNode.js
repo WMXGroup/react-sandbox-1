@@ -4,6 +4,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
@@ -13,11 +14,12 @@ const styles = (theme) => ({
   nodeContainer:{
     borderLeft: '1px solid #ccc',
     display:'flex',
+    
   },
   nodeText:{
     // border: 'none',
-    width:'500px'
-
+    width:'500px',
+    borderBottom: '1px dashed #ccc'
   },
   addButton:{
     fontSize: '17px',
@@ -32,7 +34,8 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   checkbox:{
-    height: 0
+    height: 0,
+    width: '5px'
   },
 });
 
@@ -57,13 +60,22 @@ class TextNode extends React.Component {
     } = this.props;
     return(
       <div className={classes.nodeContainer}>
-        <Checkbox
-          checked={selected}
-          className={classes.checkbox}
-          onChange={onChange}
-          color="primary"
-          size='small'
-        />
+        <Badge
+          badgeContent={nodeCount}
+          color='primary'
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          >
+          <Checkbox
+            checked={selected}
+            className={classes.checkbox}
+            onChange={onChange}
+            color="primary"
+            size='small'
+          />
+        </Badge>
         <TextField
           className={classes.nodeText}
           InputProps={{
@@ -78,9 +90,6 @@ class TextNode extends React.Component {
           inputRef={myRef}
           multiline
         />
-        <label className={classes.nodeCount}>
-          {nodeCount}
-        </label>
         <IconButton
           onClick={handleAddSub}
           size='small'
