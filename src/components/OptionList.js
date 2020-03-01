@@ -125,7 +125,7 @@ class OptionList extends React.Component {
             handleTextChange={(event) => handleChange(event.target.value, option.id)}
             handleAdd={() => handleAdd(index)}
             handleAddSub={() => handleAddSub(option.id)}
-            handleDelete={() => handleDelete(option.id)}
+            handleDelete={() => {if (window.confirm('Are you sure you wish to delete this item?')) handleDelete(option.id)}}
             handleReturn={(e) => handleReturn(e, index)}
             myRef={this.textInput[index]}
             isMaxNew={this.state.isLastNew}
