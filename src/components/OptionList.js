@@ -29,6 +29,7 @@ class OptionList extends React.Component {
     }
     
     const handleChange = (newValue, optionId) => {
+      ('handle Change triggered')
       for(let i=0;i<options.length;i++){
         if(options[i].id === optionId){
           options[i].name = newValue
@@ -37,8 +38,12 @@ class OptionList extends React.Component {
       textChange(options);
     }
   
-    const handleSubOptionsTextChange = (optionName, subOptions) => {
-      options[optionName] = subOptions
+    const handleSubOptionsTextChange = (optionId, subOptions) => {
+      for(let i=0;i<options.length;i++){
+        if(options[i].id === optionId){
+          options[i].subOptions = subOptions
+        }
+      }
       textChange(options);
     }
 
@@ -51,7 +56,9 @@ class OptionList extends React.Component {
         name:"",
         id: uuidv4(),
         subOptions: [],
-        depth: options[index].depth
+        selected: false,
+        depth: options[index].depth,
+        // count: 0
       }
       options.splice(index+1, 0, newOption )
       textChange(options)
@@ -62,6 +69,8 @@ class OptionList extends React.Component {
         name:"",
         id: uuidv4(),
         subOptions: [],
+        selected: false,
+        // count: 0
       }
       for(let i=0;i<options.length;i++){
         if(options[i].id === optionId){
@@ -99,6 +108,15 @@ class OptionList extends React.Component {
       }
     }
 
+    const handleCountChange = (newValue, optionId) => {
+      for(let i=0;i<options.length;i++){
+        if(options[i].id === optionId){
+          options[i].count = newValue
+        }
+      }
+      textChange(options);
+    }
+
     const getNodeCount = (optionId) => {
       let optionCount = 0;
       for(let i=0;i<options.length;i++){
@@ -109,6 +127,18 @@ class OptionList extends React.Component {
       return optionCount;
     }
 
+    // const getSubOptionCount = (optionId) => {
+    //   let subCount = 0;
+    //   for(let i=0;i<options.length;i++){
+    //     if(options[i].id === optionId){
+    //       for(let j=0;j<options[i].subOptions.length;j++){
+    //         subCount = subCount + parseInt(options[i].subOptions[j].count)
+    //       }
+    //     }
+    //   }
+    //   return subCount;
+    // }
+
     return(
       <React.Fragment>
       {options.map((option, index) => {
@@ -116,7 +146,7 @@ class OptionList extends React.Component {
         <ul style={{
           margin: 0,
           paddingLeft: option.depth === 0 ? 0 : '20px',
-          borderLeft: option.depth === 0 ?'none': '1px #ccc solid'
+          borderLeft: option.depth === 0 ?'none': '1px #ccc dashed'
         }}>
           <TextNode
             selected={option.selected} 
@@ -125,17 +155,20 @@ class OptionList extends React.Component {
             handleTextChange={(event) => handleChange(event.target.value, option.id)}
             handleAdd={() => handleAdd(index)}
             handleAddSub={() => handleAddSub(option.id)}
-            handleDelete={() => {if (window.confirm('Are you sure you wish to delete this item?')) handleDelete(option.id)}}
+            handleDelete={() => {if (window.confirm(`Are you sure you want to delete "${option.name}"?`)) handleDelete(option.id)}}
             handleReturn={(e) => handleReturn(e, index)}
             myRef={this.textInput[index]}
             isMaxNew={this.state.isLastNew}
             nodeCount={getNodeCount(option.id)}
+            count={option.count}
+            // handleCountChange={(event) => handleCountChange(event.target.value, option.id)}
+            // subCount={getSubOptionCount(option.id)}
            />
           {/* Base Case */}
           {(option.subOptions.length > 0 && option.selected === true) &&
             <OptionList
               options={option.subOptions}
-              textChange={(subOptions) => handleSubOptionsTextChange(option.name, subOptions)}
+              textChange={(subOptions) => handleSubOptionsTextChange(option.id, subOptions)}
              />
           }
         </ul>

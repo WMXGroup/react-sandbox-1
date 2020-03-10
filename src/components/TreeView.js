@@ -11,6 +11,9 @@ const styles = {
     padding: '8px',
     margin: '3px',
     textAlign: 'center',
+  },
+  optionsContainer: {
+    width: '500px'
   }
 }
 
@@ -140,7 +143,8 @@ class TreeView extends React.Component {
       id: 1,
       selected: false,
       subOptions: [],
-      depth: 0
+      depth: 0,
+      // count: 0
     }];
 
     this.setState({
@@ -207,11 +211,13 @@ class TreeView extends React.Component {
            </Button>
          </div>
         }
-         <h1>My Tree</h1>
+        <h1>My Tree</h1>
+        <div style={styles.optionsContainer}>
           <OptionList 
-            options={this.state.options}
-            textChange={(options) => this.setState({options})}
-          />
+              options={this.state.options}
+              textChange={(options) => this.setState({options})}
+            />
+        </div>
        </div>
      )
   }

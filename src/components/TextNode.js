@@ -14,10 +14,8 @@ const styles = (theme) => ({
   nodeContainer:{
     borderLeft: '1px solid #ccc',
     display:'flex',
-    
   },
   nodeText:{
-    // border: 'none',
     width:'500px',
     borderBottom: '1px dashed #ccc'
   },
@@ -37,6 +35,13 @@ const styles = (theme) => ({
     height: 0,
     width: '5px'
   },
+  // valueCount:{
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   border: '1px solid #ccc',
+  //   width:'50px',
+  //   height: '20px'
+  // }
 });
 
 class TextNode extends React.Component {
@@ -56,7 +61,10 @@ class TextNode extends React.Component {
       handleDelete,
       handleReturn,
       nodeCount,
-      myRef
+      myRef,
+      // count,
+      // handleCountChange,
+      // subCount
     } = this.props;
     return(
       <div className={classes.nodeContainer}>
@@ -90,6 +98,18 @@ class TextNode extends React.Component {
           inputRef={myRef}
           multiline
         />
+        {/* <TextField
+          className={classes.valueCount}
+          InputProps={{
+            disableUnderline: true,
+            style: {
+              padding: 0,
+            }
+          }}
+          onChange={handleCountChange}
+          value={subCount === 0 ? count : subCount}
+          disabled={subCount === 0 ? false: true}
+        /> */}
         <IconButton
           onClick={handleAddSub}
           size='small'
