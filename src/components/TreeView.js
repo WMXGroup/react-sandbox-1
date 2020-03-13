@@ -12,8 +12,13 @@ const styles = {
     margin: '3px',
     textAlign: 'center',
   },
-  optionsContainer: {
-    width: '500px'
+  treeContainer: {
+    maxWidth: '700px'
+  },
+  optionsContainer:{
+    // border: '1px solid red',
+    // display: 'flex',
+    // flexBasis: '100%'
   }
 }
 
@@ -212,11 +217,13 @@ class TreeView extends React.Component {
          </div>
         }
         <h1>My Tree</h1>
-        <div style={styles.optionsContainer}>
-          <OptionList 
-              options={this.state.options}
-              textChange={(options) => this.setState({options})}
-            />
+        <div style={styles.treeContainer}>
+          <div style={styles.optionsContainer}>
+            <OptionList 
+                options={this.state.options}
+                textChange={(options) => this.setState({options})}
+              />
+          </div>
         </div>
        </div>
      )

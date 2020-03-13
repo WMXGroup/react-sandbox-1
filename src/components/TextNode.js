@@ -12,11 +12,11 @@ const styles = (theme) => ({
     margin: 0,
   },
   nodeContainer:{
-    borderLeft: '1px solid #ccc',
+    borderLeft: '1px dashed #ccc',
     display:'flex',
   },
   nodeText:{
-    width:'500px',
+    width:'700px',
     borderBottom: '1px dashed #ccc'
   },
   addButton:{
