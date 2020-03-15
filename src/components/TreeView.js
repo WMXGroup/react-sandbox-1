@@ -271,8 +271,9 @@ class TreeView extends React.Component {
             style: {
               display: 'block',
               fontSize: '2em',
-              marginTop: '0.67em',
-              padding: 0
+              marginTop: '0.3em',
+              marginBottom: '0.3em',
+              // padding: 0
             }
           }}
           value={this.state.listName}
