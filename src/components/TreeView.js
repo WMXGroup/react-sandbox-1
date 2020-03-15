@@ -9,7 +9,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
-import LoadingOverlay from 'react-loading-overlay';
 // import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
@@ -256,11 +255,6 @@ class TreeView extends React.Component {
               color="primary"
               >Export Data
             </Button> */}
-          <LoadingOverlay
-          active={this.state.isLoading}
-          spinner
-          text='Loading the tree...'
-          >
           <h1>My Tree</h1>
           <div style={styles.treeContainer}>
             <OptionList 
@@ -268,7 +262,6 @@ class TreeView extends React.Component {
                 textChange={(options) => this.setState({options})}
               />
           </div>
-          </LoadingOverlay>
         </React.Fragment>
      )
   }
