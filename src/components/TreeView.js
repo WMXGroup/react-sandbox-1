@@ -142,7 +142,9 @@ class TreeView extends React.Component {
 
     axios
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
-      list: newData
+      list: newData,
+      listName: this.state.listName,
+      lastSaved: new Date()
     })
     .then((res) => {
       alert('New list created!')
