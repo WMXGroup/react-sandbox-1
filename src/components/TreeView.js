@@ -1,32 +1,30 @@
 import React from 'react';
 import OptionList from './OptionList';
-import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Typography from '@material-ui/core/Typography';
+// import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
 const styles = {
-  buttonContainer:{
-    display: 'flex',
-  },
-  buttonStyle: {
-    padding: '8px',
-    margin: '3px',
-    textAlign: 'center',
-  },
   treeContainer: {
     maxWidth: '700px'
   },
-  optionsContainer:{
-    // border: '1px solid red',
-    // display: 'flex',
-    // flexBasis: '100%'
-  }
 }
 
 class TreeView extends React.Component {    
   state = {
     options: [],
     selectedFile: null,
-    isLoading: true
+    isLoading: true,
+    anchorEl: null,
+    setAnchorEl: false,
   }
 
   componentDidMount = () => {
@@ -55,6 +53,7 @@ class TreeView extends React.Component {
   }
 
   saveData = () => {
+    this.handleClose();
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let listId = params.get('query');
@@ -98,10 +97,12 @@ class TreeView extends React.Component {
   };
 
   exportJSON = () => {
+    this.handleClose();
     this.downloadFile(JSON.stringify(this.state.options), "data.json", "text/plain");
   }
 
   getFile = (e) => {
+    this.handleClose();
     let files = e.target.files;
     let reader = new FileReader();
     reader.readAsText(files[0]);
@@ -115,6 +116,7 @@ class TreeView extends React.Component {
   }
 
   createNew = () => {
+    this.handleClose();
     const newData = 
     [{
       name: "Start Here",
@@ -142,6 +144,7 @@ class TreeView extends React.Component {
   }
 
   createBaseNode = () => {
+    this.handleClose();
     const newData = 
     [{
       name: "Start Here",
@@ -153,9 +156,22 @@ class TreeView extends React.Component {
     }];
 
     this.setState({
-      options: newData
+      options: newData,
     });
   }
+
+  handleMenu = event => {
+    this.setState({
+      anchorEl: event.currentTarget,
+      setAnchorEl: true
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      setAnchorEl: false
+    });
+  };
 
   render() {
 
@@ -164,68 +180,84 @@ class TreeView extends React.Component {
     // }
 
      return (
-       <div>
-         <div style={styles.buttonContainer}>
-          <input 
-            type="file"
-            style={{ display: 'none' }}
-            id="raised-button-file"
-            name="file" 
-            onChange={this.getFile}
-            accept=".json"
-            />
-            <label htmlFor="raised-button-file">
-              <Button 
-                style={styles.buttonStyle}
-                variant="contained"
-                color="primary"
-                component="span">
-                Import JSON
-              </Button>
-            </label>
-          <Button
-            style={styles.buttonStyle}
+       <React.Fragment>
+          <AppBar 
+          position="fixed" 
+          color="primary">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={this.handleMenu}
+              >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                open={this.state.setAnchorEl}
+                onClose={this.handleClose}
+              >
+                <input 
+                  type="file"
+                  style={{ display: 'none' }}
+                  id="raised-button-file"
+                  name="file" 
+                  onChange={this.getFile}
+                  accept=".json"
+                  />
+                <label htmlFor="raised-button-file">
+                  <MenuItem onClick={() => this.getFile()}>Import JSON</MenuItem>
+                </label>
+                <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
+                <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem>
+                <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
+                {this.state.options.length === 0 &&
+                  <MenuItem onClick={() => this.createBaseNode()}>Create Base Node</MenuItem>
+                }
+              </Menu>
+            <Typography variant="h6">
+                Outliner
+            </Typography>
+            <div style={{flexGrow: 1}} />
+            <IconButton color="inherit">
+              <SearchIcon />
+            </IconButton>
+            <IconButton edge="end" color="inherit">
+              <MoreIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Toolbar />
+          {/* <Button
+            style={{
+              padding: '8px',
+              margin: '3px',
+              textAlign: 'center',
+            }}
             variant="contained"
             onClick={() => this.exportJSON()}
             color="primary"
             >Export Data
-          </Button>
-          <Button
-            style={styles.buttonStyle}
-            variant="contained"
-            onClick={() => this.saveData()}
-            color="primary"
-            >Save Data
-          </Button>
-          <Button
-            style={styles.buttonStyle}
-            variant="contained"
-            onClick={() => this.createNew()}
-            color="primary"
-            >Create New
-          </Button>
-         </div>
-         {this.state.options.length === 0 &&
-         <div>
-           <Button
-            style={styles.buttonStyle}
-            variant="contained"
-            onClick={() => this.createBaseNode()}
-            color="primary"
-            >Add Base Node
-           </Button>
-         </div>
-        }
+          </Button> */}
         <h1>My Tree</h1>
         <div style={styles.treeContainer}>
-          <div style={styles.optionsContainer}>
-            <OptionList 
-                options={this.state.options}
-                textChange={(options) => this.setState({options})}
-              />
-          </div>
+          <OptionList 
+              options={this.state.options}
+              textChange={(options) => this.setState({options})}
+            />
         </div>
-       </div>
+        </React.Fragment>
      )
   }
 }
