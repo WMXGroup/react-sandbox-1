@@ -71,18 +71,37 @@ class TreeView extends React.Component {
     let listId = params.get('query');
     const currentDT = new Date();
 
-    axios
-    .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
-      list: this.state.options,
-      listName: this.state.listName,
-      lastSaved: currentDT
-    })
-    .then(() => {
-      this.setState({
+    if(listId === null){
+      axios
+      .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
+        list: this.state.list,
+        listName: this.state.listName,
+        lastSaved: new Date()
+      })
+      .then((res) => {
+        alert('New list created!')
+        return(res);
+      })
+      .then((res) => {
+        const newId = res.data._id;
+        const a = document.createElement("a");
+        a.href = `https://wmxgroup.github.io/react-sandbox-1/?query=${newId}`;
+        a.click();
+      });
+    } else {
+      axios
+      .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
+        list: this.state.options,
+        listName: this.state.listName,
         lastSaved: currentDT
       })
-      alert('Data saved successfully!')
-    });
+      .then(() => {
+        this.setState({
+          lastSaved: currentDT
+        })
+        alert('Data saved successfully!')
+      });
+    }
   }
 
   getLSData = () => {
