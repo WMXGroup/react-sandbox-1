@@ -46,13 +46,14 @@ class TreeView extends React.Component {
     if(listId !== undefined && listId !== null){
       this.setState({
         isLoading: true
-      },
+      },() => {
         axios
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({ 
           options: res.data.list,
           isLoading: false
         }))
+        }
       )
     }
   }
