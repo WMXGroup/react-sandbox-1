@@ -143,11 +143,13 @@ class OptionList extends React.Component {
       <React.Fragment>
       {options.map((option, index) => {
         return (
-        <ul style={{
+        <ul
+          key={[option.id, index].concat()}
+          style={{
           margin: 0,
           paddingLeft: option.depth === 0 ? 0 : '20px',
           borderLeft: option.depth === 0 ?'none': '1px #ccc dashed'
-        }}>
+          }}>
           <TextNode
             selected={option.selected} 
             label={option.name} 
