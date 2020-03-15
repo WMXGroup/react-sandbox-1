@@ -74,7 +74,7 @@ class TreeView extends React.Component {
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
       list: this.state.options,
       listName: this.state.listName,
-      lastSaved: this.state.lastSaved,
+      lastSaved: new Date()
     })
     .then(() => {
       alert('Data saved successfully!')
@@ -198,7 +198,6 @@ class TreeView extends React.Component {
     // if(this.state.isLoading === false){
     //   this.writeToLS(this.state.options);
     // }
-    console.log(new Date())
 
      return (
        <React.Fragment>
