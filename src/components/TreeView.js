@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 // import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ const styles = {
 
 class TreeView extends React.Component {    
   state = {
+    listName: 'List Name',
     options: [],
     selectedFile: null,
     isLoading: false,
@@ -48,7 +50,8 @@ class TreeView extends React.Component {
       },() => {
         axios
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
-        .then(res => this.setState({ 
+        .then(res => this.setState({
+          listName: res.data.listName,
           options: res.data.list,
           isLoading: false
         }))
@@ -65,7 +68,8 @@ class TreeView extends React.Component {
 
     axios
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
-      list: this.state.options
+      list: this.state.options,
+      listName: this.state.listName
     })
     .then(() => {
       alert('Data saved successfully!')
@@ -178,6 +182,12 @@ class TreeView extends React.Component {
     });
   };
 
+  handleTitleChange = (e) => {
+    this.setState({
+      listName: e.target.value
+    })
+  }
+
   render() {
 
     // if(this.state.isLoading === false){
@@ -255,7 +265,19 @@ class TreeView extends React.Component {
               color="primary"
               >Export Data
             </Button> */}
-          <h1>My Tree</h1>
+          <TextField
+          InputProps={{
+            disableUnderline: true,
+            style: {
+              display: 'block',
+              fontSize: '2em',
+              marginTop: '0.67em',
+              padding: 0
+            }
+          }}
+          value={this.state.listName}
+          onChange={this.handleTitleChange}
+        />
           <div style={styles.treeContainer}>
             <OptionList 
                 options={this.state.options}
