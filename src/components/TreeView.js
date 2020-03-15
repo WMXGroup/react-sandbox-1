@@ -32,6 +32,7 @@ class TreeView extends React.Component {
 
   componentDidMount = () => {
     this.getServerData();
+    console.log("mounted");
     // const treeData = this.getLSData();
     
     // this.setState({
@@ -87,15 +88,6 @@ class TreeView extends React.Component {
         const a = document.createElement("a");
         a.href = `https://wmxgroup.github.io/react-sandbox-1/?query=${newId}`;
         a.click();
-        console.log(res);
-        return res.data
-      })
-      .then((data) => {
-        this.setState({
-          listName: data.listName,
-          options: data.list,
-          lastSaved: data.lastSaved,
-        })
       })
     } else {
       axios
