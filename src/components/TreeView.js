@@ -27,6 +27,7 @@ class TreeView extends React.Component {
     isLoading: false,
     anchorEl: null,
     setAnchorEl: false,
+    lastSaved: null,
   }
 
   componentDidMount = () => {
@@ -53,10 +54,13 @@ class TreeView extends React.Component {
         .then(res => this.setState({
           listName: res.data.listName,
           options: res.data.list,
+          lastSaved: res.data.lastSaved,
           isLoading: false
         }))
         }
       )
+    } else {
+      this.createBaseNode()
     }
   }
 
@@ -69,7 +73,8 @@ class TreeView extends React.Component {
     axios
     .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
       list: this.state.options,
-      listName: this.state.listName
+      listName: this.state.listName,
+      lastSaved: this.state.lastSaved,
     })
     .then(() => {
       alert('Data saved successfully!')
@@ -193,6 +198,7 @@ class TreeView extends React.Component {
     // if(this.state.isLoading === false){
     //   this.writeToLS(this.state.options);
     // }
+    console.log(new Date())
 
      return (
        <React.Fragment>
@@ -237,9 +243,6 @@ class TreeView extends React.Component {
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
                   <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
-                  {this.state.options.length === 0 &&
-                    <MenuItem onClick={() => this.createBaseNode()}>Create Base Node</MenuItem>
-                  }
                 </Menu>
               <Typography variant="h6">
                   Outliner
@@ -265,6 +268,13 @@ class TreeView extends React.Component {
               color="primary"
               >Export Data
             </Button> */}
+          <div
+            style={{
+              fontStyle:'italic',
+              color:'#bbb',
+            }}>
+              {this.state.lastSaved === null ? 'Not Saved' : 'Last Saved: ' + this.state.lastSaved}
+          </div>
           <TextField
           InputProps={{
             disableUnderline: true,
