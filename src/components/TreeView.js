@@ -32,7 +32,6 @@ class TreeView extends React.Component {
 
   componentDidMount = () => {
     this.getServerData();
-    console.log("mounted");
     // const treeData = this.getLSData();
     
     // this.setState({
@@ -74,10 +73,9 @@ class TreeView extends React.Component {
     console.log('saving Data');
 
     if(listId === null){
-      console.log('brand new')
       axios
       .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
-        list: this.state.list,
+        list: this.state.options,
         listName: this.state.listName,
         lastSaved: new Date()
       })
