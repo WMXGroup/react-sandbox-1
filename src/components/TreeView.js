@@ -71,8 +71,10 @@ class TreeView extends React.Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
     const currentDT = new Date();
+    console.log('saving Data');
 
     if(listId === null){
+      console.log('brand new')
       axios
       .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
         list: this.state.list,
