@@ -70,7 +70,6 @@ class TreeView extends React.Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
     const currentDT = new Date();
-    console.log('saving Data');
 
     if(listId === null){
       axios
@@ -219,6 +218,21 @@ class TreeView extends React.Component {
     })
   }
 
+  // onDragOver = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.background = 'yellow';
+  //   }
+
+  // onDragEnter = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.background = 'yellow';
+  //   }
+
+  // onDragLeave = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.background = 'green';
+  //   }
+
   render() {
 
     // if(this.state.isLoading === false){
@@ -293,6 +307,24 @@ class TreeView extends React.Component {
               color="primary"
               >Export Data
             </Button> */}
+
+          {/* <div style={{display:'flex'}}>
+            <div 
+              style={{backgroundColor:'red',width:'50px',height:'50px'}} 
+              draggable
+              >
+              Drag
+            </div>
+            <div 
+              style={{backgroundColor:'green',width:'50px',height:'50px'}}
+              onDragEnter={this.onDragEnter}
+              onDragLeave={this.onDragLeave}
+              onDragOver={this.onDragOver}
+              onDrop={() => {console.log('test')}}
+              >
+              Drop
+            </div>
+          </div> */}
           <div
             style={{
               fontStyle:'italic',

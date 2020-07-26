@@ -4,6 +4,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import MoreHoriz from '@material-ui/icons/MoreHoriz';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -15,9 +20,18 @@ const styles = (theme) => ({
     borderLeft: '1px dashed #ccc',
     display:'flex',
   },
+  checkbox:{
+    height: 0,
+    width: '5px'
+  },
   nodeText:{
     width:'700px',
     borderBottom: '1px dashed #ccc'
+  },
+  options:{
+    border: '1px dashed #ccc',
+    display:'flex',
+    height: '21px',
   },
   addButton:{
     fontSize: '17px',
@@ -27,13 +41,13 @@ const styles = (theme) => ({
     fontSize: '17px',
     color: 'red',
   },
+  moveButtons:{
+    fontSize: '17px',
+    color: 'gray',
+  },
   nodeCount:{
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  checkbox:{
-    height: 0,
-    width: '5px'
   },
   // valueCount:{
   //   justifyContent: 'center',
@@ -45,11 +59,28 @@ const styles = (theme) => ({
 });
 
 class TextNode extends React.Component {
+
+  state = {
+    showOptions: false,
+  }
+
   componentDidMount(){
     if(this.props.isMaxNew === true){
       this.props.myRef.current.focus()
     }
   }
+
+  toggleOptions = (methodName) => {
+
+    if(methodName){
+      methodName();
+    }
+
+    this.setState({
+      showOptions: !this.state.showOptions
+    })
+  }
+
   render(){
     const {
       classes,    
@@ -62,7 +93,13 @@ class TextNode extends React.Component {
       handleReturn,
       nodeCount,
       myRef,
-      // count,
+      handleMoveIn,
+      handleMoveOut,
+      handleMoveUp,
+      handleMoveDown,
+      index,
+      depth,
+      count,
       // handleCountChange,
       // subCount
     } = this.props;
@@ -110,20 +147,74 @@ class TextNode extends React.Component {
           value={subCount === 0 ? count : subCount}
           disabled={subCount === 0 ? false: true}
         /> */}
+        {this.state.showOptions === true &&
+          <div
+            className={classes.options}
+            >
+            {index > 0 &&
+              <IconButton
+              onClick={handleMoveUp}
+              size='small'
+              >
+                <ArrowUpward
+                  className={classes.moveButtons}
+                />
+              </IconButton>
+            }
+            {index < count &&
+              <IconButton
+                onClick={handleMoveDown}
+                size='small'
+              >
+                <ArrowDownward
+                  className={classes.moveButtons}
+                />
+              </IconButton>
+            }
+            {depth > 0 &&
+              <IconButton
+                onClick={handleMoveIn} 
+                size='small'
+                >
+                <ArrowBack
+                  className={classes.moveButtons}
+                />
+              </IconButton>
+            }
+            {index !== 0 &&
+              <IconButton
+                onClick={handleMoveOut}
+                size='small'
+                >
+                <ArrowForward
+                  className={classes.moveButtons}
+                />
+              </IconButton>
+            }
+            <IconButton
+              onClick={() => this.toggleOptions(handleAddSub)}
+              size='small'
+              >
+              <AddCircleIcon
+                className={classes.addButton}
+              />
+            </IconButton>
+            <IconButton
+              onClick={handleDelete} 
+              size='small'
+              >
+              <HighlightOffIcon
+                className={classes.deleteButton}
+              />
+            </IconButton>
+          </div>
+        }
         <IconButton
-          onClick={handleAddSub}
+          onClick={() => this.toggleOptions()} 
           size='small'
-        >
-          <AddCircleIcon
-            className={classes.addButton}
-          />
-        </IconButton>
-        <IconButton
-          onClick={handleDelete} 
-          size='small'
-        >
-          <HighlightOffIcon
-            className={classes.deleteButton}
+          >
+          <MoreHoriz
+            className={classes.moveButtons}
           />
         </IconButton>
     </div>

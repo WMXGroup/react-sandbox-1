@@ -11,6 +11,36 @@ class OptionList extends React.Component {
     isLastNew : false,
   }
 
+  // onDragStart = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = '1px solid red';
+  //   }
+
+  // onDragEnter = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = '1px solid red';
+  //   }
+
+  // onDragOver = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = '1px solid red';
+  //   }
+
+  // onDragEnd = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = '1px dashed #ccc';
+  //   }
+
+  // onDragLeave = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = 'none';
+  //   }
+
+  // onDrop = (e) => {
+  //   e.preventDefault();
+  //   e.target.style.borderLeft = '1px solid red';
+  //   }
+
   render(){
     const { options, textChange } = this.props;
 
@@ -29,7 +59,6 @@ class OptionList extends React.Component {
     }
     
     const handleChange = (newValue, optionId) => {
-      ('handle Change triggered')
       for(let i=0;i<options.length;i++){
         if(options[i].id === optionId){
           options[i].name = newValue
@@ -127,6 +156,47 @@ class OptionList extends React.Component {
       return optionCount;
     }
 
+   const handleMoveIn = (option, index) => {
+      const newOption = {
+        name:option.name,
+        id: option.id,
+        subOptions: option.subOptions,
+        selected: option.selected,
+        depth: option.depth - 1,
+        // count: 0
+      }
+      options.splice(index+1, 0, newOption )
+      textChange(options)
+    }
+
+    const handleMoveOut = (option, index) => {
+      const newSubOption = {
+        name:option.name,
+        id: option.id,
+        subOptions: option.subOptions,
+        selected: option.selected,
+        depth: option.depth + 1
+        // count: 0
+      }
+      for(let i=0;i<options.length;i++){
+        if(i === index-1){
+          options[i].subOptions.push(newSubOption)
+          options[i].selected = true
+        }
+      }
+      textChange(options)
+    }
+
+    const handleMoveUp = (index) => {
+      [options[index],options[index-1]] = [options[index-1],options[index]];
+      textChange(options)
+    }
+
+    const handleMoveDown = (index) => {
+      [options[index],options[index+1]] = [options[index+1],options[index]];
+      textChange(options)
+    }
+
     // const getSubOptionCount = (optionId) => {
     //   let subCount = 0;
     //   for(let i=0;i<options.length;i++){
@@ -148,11 +218,20 @@ class OptionList extends React.Component {
           style={{
           margin: 0,
           paddingLeft: option.depth === 0 ? 0 : '20px',
-          borderLeft: option.depth === 0 ?'none': '1px #ccc dashed'
-          }}>
+          borderLeft: option.depth === 0 ?'none': '1px dashed #ccc'
+          }}
+          // draggable
+          // onDragEnter={this.onDragEnter}
+          // onDragLeave={this.onDragLeave}
+          // onDrop={this.onDrop}
+          // onDragStart={this.onDragStart}
+          // onDragOver={this.onDragOver}
+          // onDragEnd={this.onDragEnd}
+          >
           <TextNode
             selected={option.selected} 
-            label={option.name} 
+            label={option.name}
+            depth={option.depth}
             onChange={() => handleCheckboxClicked(option.id)}
             handleTextChange={(event) => handleChange(event.target.value, option.id)}
             handleAdd={() => handleAdd(index)}
@@ -162,7 +241,18 @@ class OptionList extends React.Component {
             myRef={this.textInput[index]}
             isMaxNew={this.state.isLastNew}
             nodeCount={getNodeCount(option.id)}
-            count={option.count}
+            count={options.length - 1}
+            handleMoveIn={() => {
+              this.props.handleMoveIn(option, index) 
+              handleDelete(option.id)}
+            }
+            handleMoveOut={() => {
+              handleMoveOut(option, index)
+              handleDelete(option.id)
+            }}
+            index={index}
+            handleMoveUp={() => handleMoveUp(index)}
+            handleMoveDown={() => handleMoveDown(index)}
             // handleCountChange={(event) => handleCountChange(event.target.value, option.id)}
             // subCount={getSubOptionCount(option.id)}
            />
@@ -171,6 +261,7 @@ class OptionList extends React.Component {
             <OptionList
               options={option.subOptions}
               textChange={(subOptions) => handleSubOptionsTextChange(option.id, subOptions)}
+              handleMoveIn={(option, index) => handleMoveIn(option, index)}
              />
           }
         </ul>
